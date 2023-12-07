@@ -4,34 +4,34 @@ using System.Xml.Linq;
 
 namespace PokemonTrainerPP
 {
-    public class PokemonTrainer
+    internal class PokemonTrainer
     {
-        public string TrainerName { get; set; }
-        public int Coins { get; set; }
-        public int HealthPotions { get; set; }
-        public int Pokeballs { get; set; }
-        public List<Pokemon> myPokemons { get; set; }
+        internal string TrainerName { get; set; }
+        internal int Coins { get; set; }
+        internal int HealthPotions { get; set; }
+        internal int Pokeballs { get; set; }
+        internal List<Pokemon> MyPokemons { get; set; }
 
-        public PokemonTrainer(int coins, int healthPotions, int pokeballs)
+        internal PokemonTrainer(int coins, int healthPotions, int pokeballs)
         {
             Coins = coins;
             HealthPotions = healthPotions;
             Pokeballs = pokeballs;
         }
 
-        public PokemonTrainer(int coins, int healthPotions, int pokeballs, List<Pokemon> myPokemons)
+        internal PokemonTrainer(int coins, int healthPotions, int pokeballs, List<Pokemon> myPokemons)
         {
             Coins = coins;
             HealthPotions = healthPotions;
             Pokeballs = pokeballs;
-            this.myPokemons = myPokemons;
+            this.MyPokemons = myPokemons;
         }
 
-        public void PrintInfo()
+        internal void PrintInfo()
         {
             Console.Clear();
             Console.WriteLine("Your pokemon: \n");
-            foreach (var pokemon in myPokemons)
+            foreach (var pokemon in MyPokemons)
             {
                 Console.WriteLine($"Name : {pokemon.Name}");
                 Console.WriteLine($"Level: {pokemon.Level}");
