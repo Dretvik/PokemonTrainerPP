@@ -2,21 +2,32 @@
 {
     internal class Program
     {
+        private PokemonTrainer trainer;
+
+        public Program()
+        {
+            trainer = new PokemonTrainer(50, 2, 5, new List<Pokemon>());
+        }
         static void Main(string[] args)
         {
-            PokemonTrainer trainer = new PokemonTrainer(10, 2, 5, new List<Pokemon>());
+            Program program = new Program();
+            program.Run();
+        }
 
-            Console.WriteLine("Hello and welcome to our pokemon trainer app");
+        public void Run()
+        {
+            Console.WriteLine("Hello and welcome to our pokemon trainer app!");
             Console.WriteLine("Please enter your name:");
             trainer.TrainerName = Console.ReadLine();
 
-            Pokemon charmander = new Pokemon("Charmander", "Fire", 10, 5);
-            Pokemon squirtle = new Pokemon("Squirtle", "Water", 10, 5);
-            Pokemon bulbasaur = new Pokemon("Bulbasaur", "Grass", 10, 5);
+            var charmander = new Pokemon("Charmander", "Fire", 10, 5, 10);
+            var squirtle = new Pokemon("Squirtle", "Water", 10, 5, 10);
+            var bulbasaur = new Pokemon("Bulbasaur", "Grass", 10, 5, 10);
 
             while (true)
             {
-                Console.WriteLine("Please choose an option:");
+                Console.Clear();
+                Console.WriteLine($"Hello there {trainer.TrainerName}! \nPlease choose a starter pokemon:");
                 Console.WriteLine("1. Charmander \n2. Squirtle \n3. Bulbasaur \n0. Exit program");
 
                 string choice = Console.ReadLine();
@@ -24,13 +35,13 @@
                 switch (choice)
                 {
                     case "1":
-                        AddPokemon(trainer, charmander);
+                        AddPokemon(charmander);
                         break;
                     case "2":
-                        AddPokemon(trainer, squirtle);
+                        AddPokemon(squirtle);
                         break;
                     case "3":
-                        AddPokemon(trainer, bulbasaur);
+                        AddPokemon(bulbasaur);
                         break;
                     case "0":
                         return;
@@ -41,14 +52,14 @@
             }
         }
 
-        public static void AddPokemon(PokemonTrainer trainer, Pokemon pokemon)
+        public void AddPokemon(Pokemon pokemon)
         {
             Console.Clear();
             trainer.myPokemons.Add(pokemon);
-            GameMenu(trainer, pokemon);
+            GameMenu(pokemon);
         }
 
-        public static void GameMenu(PokemonTrainer trainer, Pokemon pokemon)
+        public void GameMenu(Pokemon pokemon)
         {
             while (true)
             {
@@ -63,9 +74,11 @@
                         Console.WriteLine("");
                         break;
                     case "2":
-                        GoToShop(trainer);
+                        Console.Clear();
+                        GoToShop();
                         break;
                     case "3":
+                        Console.Clear();
                         trainer.PrintInfo();
                         break;
                     case "0":
@@ -77,34 +90,67 @@
             }
         }
 
-        public static void GoToShop(PokemonTrainer trainer)
+
+        public void GoToShop()
         {
-            Console.Clear();
-            Console.WriteLine($"Hello {trainer.TrainerName}! Welcome to the pokestore");
-            Console.WriteLine(
-                $"You have:\n {trainer.Coins} Coins \n {trainer.Pokeballs} Pokeballs \n {trainer.HealthPotions} Potions");
             while (true)
             {
-                Console.WriteLine("Please choose an option:");
-                Console.WriteLine("1.Buy Pokeball for 1 Coins \n2 Buy potion for 5 coins \n0. Go back");
+                Console.WriteLine($"Hello {trainer.TrainerName}! Welcome to the pokestore");
+                Console.WriteLine($"You have:\n {trainer.Coins} Coins \n {trainer.Pokeballs} Pokeballs \n {trainer.HealthPotions} Potions");
+                Console.WriteLine("\nPlease choose an option:");
+                Console.WriteLine("1.Buy 1 Pokeball for 5 Coins \n2 Buy 1 potion for 10 coins \n0. Go back \n");
 
                 string choice = Console.ReadLine();
 
                 switch (choice)
                 {
                     case "1":
-                        trainer.Pokeballs++;
-                        trainer.Coins--;
+                        BuyPokeballs();
                         break;
                     case "2":
-                        
+                        BuyHealthPotions();
                         break;
                     case "0":
+                        Console.Clear();
                         return;
                     default:
                         Console.WriteLine("Invalid choice, please try again");
                         break;
                 }
+            }
+        }
+
+        private void BuyHealthPotions()
+        {
+            if (trainer.Coins >= 10)
+            {
+                trainer.HealthPotions++;
+                trainer.Coins -= 10;
+                Console.Clear();
+            }
+            else
+            {
+                Console.WriteLine("\nOoops!\nYou don't have enough coins to buy this item");
+                Console.WriteLine("\nPress any button to go back to the store menu");
+                Console.ReadLine();
+                Console.Clear();
+            }
+        }
+
+        private void BuyPokeballs()
+        {
+            if (trainer.Coins >= 5)
+            {
+                trainer.Pokeballs++;
+                trainer.Coins -= 5;
+                Console.Clear();
+            }
+            else
+            {
+                Console.WriteLine("\nOoops!\nYou don't have enough coins to buy this item");
+                Console.WriteLine("\nPress any button to go back to the store menu");
+                Console.ReadLine();
+                Console.Clear();
             }
         }
     }

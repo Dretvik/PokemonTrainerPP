@@ -30,13 +30,14 @@ namespace PokemonTrainerPP
         public void PrintInfo()
         {
             Console.Clear();
-            Console.WriteLine("Your pokemons: \n");
+            Console.WriteLine("Your pokemon: \n");
             foreach (var pokemon in myPokemons)
             {
-                Console.WriteLine($"Name: {pokemon.Name}");
+                Console.WriteLine($"Name : {pokemon.Name}");
+                Console.WriteLine($"Level: {pokemon.Level}");
+                Console.WriteLine($"HP   : {pokemon.Health}\n");
 
             }
-
             Console.WriteLine("Press any button to continue");
             Console.ReadLine();
             Console.Clear();
