@@ -109,10 +109,12 @@
                         ExploreGrassArea();
                         break;
                     case "2":
-                        //ExploreWaterArea();
+                        Console.Clear();
+                        ExploreWaterArea();
                         break;
                     case "3":
-                        //ExploreMountainArea();
+                        Console.Clear();
+                        ExploreMountainArea();
                         break;
                     case "0":
                         Console.Clear();
@@ -125,39 +127,91 @@
             }
         }
 
+        private void ExploreWaterArea()
+        {
+            Random randomLevel = new Random();
+            Random randomStats = new Random();
+            int PokemonStats = randomStats.Next(10, 200);
+            int pokemonLevel = randomLevel.Next(5, 50);
+
+            List<Pokemon> waterPokemons = new List<Pokemon>
+            {
+                new Pokemon("Krabby", "Water",PokemonStats , pokemonLevel, PokemonStats),
+                new Pokemon("Magikarp", "Water", PokemonStats, pokemonLevel, PokemonStats),
+                new Pokemon("Marill", "Water", PokemonStats, pokemonLevel, PokemonStats),
+                new Pokemon("Staryu", "Water", PokemonStats, pokemonLevel, PokemonStats),
+                new Pokemon("Horssea", "Water", PokemonStats, pokemonLevel, PokemonStats),
+            };
+            Random random = new Random();
+            var encounteredPokemon = waterPokemons[random.Next(waterPokemons.Count)];
+
+            EncounterPokemonChoice(encounteredPokemon);
+        }
+
+        private void ExploreMountainArea()
+        {
+            Random randomLevel = new Random();
+            Random randomStats = new Random();
+            int PokemonStats = randomStats.Next(10, 200);
+            int pokemonLevel = randomLevel.Next(5, 50);
+
+            List<Pokemon> mountainPokemons = new List<Pokemon>
+            {
+                new Pokemon("Geodude", "Rock", PokemonStats, pokemonLevel, PokemonStats),
+                new Pokemon("Onyx", "Rock", PokemonStats, pokemonLevel, PokemonStats),
+                new Pokemon("Rhyhorn", "Rock", PokemonStats, pokemonLevel, PokemonStats),
+                new Pokemon("Kabuto", "Rock", PokemonStats, pokemonLevel, PokemonStats),
+                new Pokemon("Larvitar", "Rock", PokemonStats, pokemonLevel, PokemonStats),
+            };
+            Random random = new Random();
+            var encounteredPokemon = mountainPokemons[random.Next(mountainPokemons.Count)];
+
+            EncounterPokemonChoice(encounteredPokemon);
+        }
+
         private void ExploreGrassArea()
         {
+            Random randomLevel = new Random();
+            Random randomStats = new Random();
+            int PokemonStats = randomStats.Next(10, 200);
+            int pokemonLevel = randomLevel.Next(5, 50);
+
             List<Pokemon> grassTypePokemons = new List<Pokemon>
             {
-                new Pokemon("Chikorita","Grass", 10, 5, 10),
-                new Pokemon("Tangela","Grass", 10, 5, 10),
-                new Pokemon("Treecko","Grass", 10, 5, 10),
-                new Pokemon("Turtwig","Grass", 10, 5, 10),
-                new Pokemon("Oddish","Grass", 10, 5, 10),
+                new Pokemon("Chikorita","Grass", PokemonStats, pokemonLevel, PokemonStats),
+                new Pokemon("Tangela","Grass", PokemonStats, pokemonLevel, PokemonStats),
+                new Pokemon("Treecko","Grass", PokemonStats, pokemonLevel, PokemonStats),
+                new Pokemon("Turtwig","Grass", PokemonStats, pokemonLevel, PokemonStats),
+                new Pokemon("Oddish","Grass", PokemonStats, pokemonLevel, PokemonStats),
             };
             Random random = new Random();
             var encounteredPokemon = grassTypePokemons[random.Next(grassTypePokemons.Count)];
 
             EncounterPokemonChoice(encounteredPokemon);
-            return;
         }
 
         private void EncounterPokemonChoice(Pokemon encounteredPokemon)
         {
-            while (true)
+            bool encounterOptions = true;
+
+            while (encounterOptions)
             {
-                Console.WriteLine($"You encountered a wild {encounteredPokemon.Name} Lvl {encounteredPokemon.Level}!\n");
-                Console.WriteLine($"What do you want to do {trainer.TrainerName}?");
+                Console.WriteLine($"You encountered a wild {encounteredPokemon.Name}!\n");
+                Console.WriteLine($"Stats: \n Lvl   {encounteredPokemon.Level} \n  HP  {encounteredPokemon.Health} \n Attatck {encounteredPokemon.Attack}");
+                Console.WriteLine($"\nWhat do you want to do {trainer.TrainerName}?");
                 Console.WriteLine($"\n1. Catch {encounteredPokemon.Name} \n2. Fight {encounteredPokemon.Name} \n\n0. Run away");
 
                 string choice = Console.ReadLine();
                 switch (choice)
                 {
                     case "1":
-                        //CatchPokemon();
+                        Console.Clear();
+                        CatchPokemon(encounteredPokemon);
+                        encounterOptions = !encounterOptions;
                         break;
                     case "2":
                         //FightPokemon();
+                        encounterOptions = !encounterOptions;
                         break;
                     case "0":
                         Console.Clear();
@@ -168,6 +222,26 @@
                         break;
                 }
             }
+        }
+
+        private void CatchPokemon(Pokemon encounteredPokemon)
+        {
+            Console.Clear();
+            if (trainer.Pokeballs >= 1)
+            {
+                Console.WriteLine($"\nYou caught {encounteredPokemon.Name}!\n");
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadLine();
+                trainer.Pokeballs--;
+                trainer.MyPokemons.Add(encounteredPokemon);
+            }
+            else
+            {
+                Console.WriteLine("You don't have enough pokeballs, go to store to buy more..");
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadLine();
+            }
+            Console.Clear();
         }
 
         private void GoToShop()
