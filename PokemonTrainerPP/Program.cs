@@ -6,7 +6,7 @@
 
         private Program()
         {
-            trainer = new PokemonTrainer(50, 2, 5, new List<Pokemon>());
+            trainer = new PokemonTrainer(50, 2, 5, new List<Pokemon>(), new List<Pokemon>(), 1);
         }
         static void Main(string[] args)
         {
@@ -20,11 +20,29 @@
             Console.WriteLine("Please enter your name:");
             trainer.TrainerName = Console.ReadLine();
 
+            if (trainer.MyPokemons.Count == 0)
+            {
+                ChooseStarterPokemon();
+            }
+            else
+            {
+                GameMenu();
+            }
+
+
+        }
+
+        private void ChooseStarterPokemon()
+        {
+            bool starterChoice = true;
+
             var charmander = new Pokemon("Charmander", "Fire", 10, 5, 10);
             var squirtle = new Pokemon("Squirtle", "Water", 10, 5, 10);
             var bulbasaur = new Pokemon("Bulbasaur", "Grass", 10, 5, 10);
 
-            while (true)
+
+
+            while (starterChoice)
             {
                 Console.Clear();
                 Console.WriteLine($"Hello there {trainer.TrainerName}! \nPlease choose a starter pokemon:");
@@ -36,12 +54,15 @@
                 {
                     case "1":
                         AddPokemon(charmander);
+                        starterChoice = !starterChoice;
                         break;
                     case "2":
                         AddPokemon(squirtle);
+                        starterChoice = !starterChoice;
                         break;
                     case "3":
                         AddPokemon(bulbasaur);
+                        starterChoice = !starterChoice;
                         break;
                     case "0":
                         return;
@@ -64,7 +85,7 @@
             while (true)
             {
                 Console.WriteLine("Please choose an option:");
-                Console.WriteLine("\n1. Go explore \n2. Go to store \n3. Show my pokemon \n\n0. Go back");
+                Console.WriteLine("\n1. Go explore \n2. Go to store \n3. Show Trainer stats \n4. Show my pokemon \n\n0. Exit Game");
 
                 string choice = Console.ReadLine();
 
@@ -79,6 +100,10 @@
                         GoToShop();
                         break;
                     case "3":
+                        Console.Clear();
+                        ShowTrainerStats();
+                        break;
+                    case "4":
                         Console.Clear();
                         trainer.PrintInfo();
                         break;
@@ -192,6 +217,7 @@
 
         private void EncounterPokemonChoice(Pokemon encounteredPokemon)
         {
+            trainer.NumberOfPokemonSeen++;
             bool encounterOptions = true;
 
             while (encounterOptions)
@@ -214,6 +240,7 @@
                         encounterOptions = !encounterOptions;
                         break;
                     case "0":
+                        trainer.TimesFleedOrRunAway++;
                         Console.Clear();
                         return;
                     default:
@@ -244,7 +271,7 @@
             Console.Clear();
         }
 
-        private void GoToShop()
+        internal void GoToShop()
         {
             while (true)
             {
@@ -307,6 +334,37 @@
             Console.WriteLine("\nPress any button to go back to the store menu");
             Console.ReadLine();
             Console.Clear();
+        }
+
+        private void ShowTrainerStats()
+        {
+            while (true)
+            {
+                trainer.ShowTrainerStats();
+
+                Console.WriteLine("\nNow what do you want to do?");
+                Console.WriteLine("1. Manage fighting team \n2. Go to Store \n\n0. Go back");
+                string choice = Console.ReadLine();
+
+                switch (choice)
+                {
+                    case "1":
+                        Console.Clear();
+                        //ManagePokemon();
+                        break;
+                    case "2":
+                        Console.Clear();
+                        GoToShop();
+                        break;
+                    case "0":
+                        Console.Clear();
+                        return;
+                    default:
+                        Console.Clear();
+                        Console.WriteLine("Invalid choice, please try again");
+                        break;
+                }
+            }
         }
     }
 }
