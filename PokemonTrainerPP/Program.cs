@@ -106,6 +106,10 @@
                     case "4":
                         Console.Clear();
                         trainer.PrintInfo();
+                        trainer.PrintCombatTeam();
+                        Console.WriteLine("Press any button to continue");
+                        Console.ReadLine();
+                        Console.Clear();
                         break;
                     case "0":
                         Console.Clear();
@@ -156,16 +160,18 @@
         {
             Random randomLevel = new Random();
             Random randomStats = new Random();
+            Random randomHP = new Random();
+            int PokemonHP = randomHP.Next(10, 250);
             int PokemonStats = randomStats.Next(10, 200);
             int pokemonLevel = randomLevel.Next(5, 50);
 
             List<Pokemon> waterPokemons = new List<Pokemon>
             {
-                new Pokemon("Krabby", "Water",PokemonStats , pokemonLevel, PokemonStats),
-                new Pokemon("Magikarp", "Water", PokemonStats, pokemonLevel, PokemonStats),
-                new Pokemon("Marill", "Water", PokemonStats, pokemonLevel, PokemonStats),
-                new Pokemon("Staryu", "Water", PokemonStats, pokemonLevel, PokemonStats),
-                new Pokemon("Horssea", "Water", PokemonStats, pokemonLevel, PokemonStats),
+                new Pokemon("Krabby", "Water",PokemonHP , pokemonLevel, PokemonStats),
+                new Pokemon("Magikarp", "Water", PokemonHP, pokemonLevel, PokemonStats),
+                new Pokemon("Marill", "Water", PokemonHP, pokemonLevel, PokemonStats),
+                new Pokemon("Staryu", "Water", PokemonHP, pokemonLevel, PokemonStats),
+                new Pokemon("Horssea", "Water", PokemonHP, pokemonLevel, PokemonStats),
             };
             Random random = new Random();
             var encounteredPokemon = waterPokemons[random.Next(waterPokemons.Count)];
@@ -177,16 +183,18 @@
         {
             Random randomLevel = new Random();
             Random randomStats = new Random();
+            Random randomHP = new Random();
+            int PokemonHP = randomHP.Next(10, 250);
             int PokemonStats = randomStats.Next(10, 200);
             int pokemonLevel = randomLevel.Next(5, 50);
 
             List<Pokemon> mountainPokemons = new List<Pokemon>
             {
-                new Pokemon("Geodude", "Rock", PokemonStats, pokemonLevel, PokemonStats),
-                new Pokemon("Onyx", "Rock", PokemonStats, pokemonLevel, PokemonStats),
-                new Pokemon("Rhyhorn", "Rock", PokemonStats, pokemonLevel, PokemonStats),
-                new Pokemon("Kabuto", "Rock", PokemonStats, pokemonLevel, PokemonStats),
-                new Pokemon("Larvitar", "Rock", PokemonStats, pokemonLevel, PokemonStats),
+                new Pokemon("Geodude", "Rock", PokemonHP, pokemonLevel, PokemonStats),
+                new Pokemon("Onyx", "Rock", PokemonHP, pokemonLevel, PokemonStats),
+                new Pokemon("Rhyhorn", "Rock", PokemonHP, pokemonLevel, PokemonStats),
+                new Pokemon("Kabuto", "Rock", PokemonHP, pokemonLevel, PokemonStats),
+                new Pokemon("Larvitar", "Rock", PokemonHP, pokemonLevel, PokemonStats),
             };
             Random random = new Random();
             var encounteredPokemon = mountainPokemons[random.Next(mountainPokemons.Count)];
@@ -198,16 +206,18 @@
         {
             Random randomLevel = new Random();
             Random randomStats = new Random();
+            Random randomHP = new Random();
+            int PokemonHP = randomHP.Next(10, 250);
             int PokemonStats = randomStats.Next(10, 200);
             int pokemonLevel = randomLevel.Next(5, 50);
 
             List<Pokemon> grassTypePokemons = new List<Pokemon>
             {
-                new Pokemon("Chikorita","Grass", PokemonStats, pokemonLevel, PokemonStats),
-                new Pokemon("Tangela","Grass", PokemonStats, pokemonLevel, PokemonStats),
-                new Pokemon("Treecko","Grass", PokemonStats, pokemonLevel, PokemonStats),
-                new Pokemon("Turtwig","Grass", PokemonStats, pokemonLevel, PokemonStats),
-                new Pokemon("Oddish","Grass", PokemonStats, pokemonLevel, PokemonStats),
+                new Pokemon("Chikorita","Grass", PokemonHP, pokemonLevel, PokemonStats),
+                new Pokemon("Tangela","Grass", PokemonHP, pokemonLevel, PokemonStats),
+                new Pokemon("Treecko","Grass", PokemonHP, pokemonLevel, PokemonStats),
+                new Pokemon("Turtwig","Grass", PokemonHP, pokemonLevel, PokemonStats),
+                new Pokemon("Oddish","Grass", PokemonHP, pokemonLevel, PokemonStats),
             };
             Random random = new Random();
             var encounteredPokemon = grassTypePokemons[random.Next(grassTypePokemons.Count)];
@@ -350,12 +360,12 @@
                 {
                     case "1":
                         Console.Clear();
-                        //ManagePokemon();
-                        break;
+                        ManagePokemon();
+                        return;
                     case "2":
                         Console.Clear();
                         GoToShop();
-                        break;
+                        return;
                     case "0":
                         Console.Clear();
                         return;
@@ -366,5 +376,49 @@
                 }
             }
         }
+
+        private void ManagePokemon()
+        {
+            while (true)
+            {
+                Console.Clear();
+                trainer.PrintInfo();
+                trainer.PrintCombatTeam();
+                Console.WriteLine("Select a Pokemon number to manage (0 to quit): ");
+
+                string input = Console.ReadLine();
+
+                if (input == "0")
+                {
+                    Console.Clear();
+                    return;
+                }
+
+                if (int.TryParse(input, out int pokemonIndex))
+                {
+                    Console.WriteLine("1. Move to Combat Team\n2. Move to Storage");
+                    string moveChoice = Console.ReadLine();
+
+                    switch (moveChoice)
+                    {
+                        case "1":
+                            trainer.MovePokemonToCombatTeam(pokemonIndex - 1);
+                            break;
+                        case "2":
+                            trainer.MovePokemonToMainTeam(pokemonIndex - 1);
+                            break;
+                        default:
+                            Console.WriteLine("Invalid choice.");
+                            break;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Please enter a valid Pokemon number or 'Q' to quit.");
+                }
+                Console.Clear();
+            }
+        }
+
     }
 }

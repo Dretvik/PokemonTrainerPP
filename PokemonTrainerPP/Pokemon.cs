@@ -8,6 +8,7 @@ namespace PokemonTrainerPP
         internal int Health { get; set; }
         internal int Level { get; set; }
         internal int Attack { get; set; }
+        internal int Experience { get; set; }
 
         internal Pokemon(string name, string type, int health, int level, int attack)
         {
